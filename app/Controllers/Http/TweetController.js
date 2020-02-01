@@ -21,14 +21,11 @@ class TweetController {
     }
 
     async timeline({ request, response }) {
-        console.log("called");
-        console.log("called");
-        console.log("called");
         try {
             const tweet = await Tweet.all()
                 .with("replies")
                 .with("favorites")
-                // .with("user")
+                .with("user")
                 .fetch();
 
             return response.json({
@@ -37,7 +34,7 @@ class TweetController {
                 data: tweet
             });
         } catch (error) {
-            console.log(error);
+            return error;
         }
     }
 
