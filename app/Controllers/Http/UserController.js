@@ -5,6 +5,18 @@ const Tweet = use("App/Models/Tweet");
 const { validate } = use("Validator");
 
 class UserController {
+    async allUsers({ request, auth, response }) {
+        try {
+            const users = await User.all();
+            return response.status(200).json({
+                status: "All users retrieved",
+                data: { users }
+            });
+        } catch (error) {
+            return error;
+        }
+    }
+
     async signup({ request, auth, response }) {
         const rules = {
             name: "required",
@@ -50,9 +62,13 @@ class UserController {
                 request.input("password")
             );
 
+            const user = await User.query()
+                .where("email", request.input("email"))
+                .first();
+
             return response.status(200).json({
                 status: "Login successful",
-                data: { token }
+                data: { token, user }
             });
         } catch (error) {
             response.status(400).json({

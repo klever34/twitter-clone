@@ -22,6 +22,7 @@ Route.get("/", () => {
 });
 Route.post("/signup", "UserController.signup");
 Route.post("/login", "UserController.login");
+Route.get("/users", "UserController.allUsers");
 Route.group(() => {
         Route.get("/me", "UserController.me");
         Route.put("/update_profile", "UserController.updateProfile");
@@ -53,8 +54,3 @@ Route.get("/mytimeline", "TweetController.timeline").middleware(["auth:jwt"]);
 Route.post("/tweets/reply/:id", "TweetController.reply").middleware([
     "auth:jwt"
 ]);
-
-Route.get("mytimes", async() => {
-    console.log("here");
-    return await Tweet.all();
-});
